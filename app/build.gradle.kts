@@ -1,7 +1,7 @@
 plugins {
     with(libs.plugins) {
-        alias(com.android.application)
-        alias(org.jetbrains.kotlin.android)
+        alias(android.application)
+        alias(jetbrains.kotlin.android)
     }
 }
 
@@ -23,8 +23,21 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            isDebuggable = true
+            isJniDebuggable = true
             isMinifyEnabled = false
+            isShrinkResources = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isJniDebuggable = false
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,6 +53,9 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+        dataBinding = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -53,7 +69,6 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar", "*.aar", "*.so"))))
-    implementation(project(":network"))
     with(libs) {
 
         implementation(androidx.core.ktx)
